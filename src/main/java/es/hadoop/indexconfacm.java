@@ -58,32 +58,32 @@ public class indexconfacm {
             paperinfo pi = gson.fromJson(source, paperinfo.class);
 
             // 正则表达式规则
-            String regEx = "\\?id=.+&";
+            String regEx = "\\?id=[^&]+&";
             // 编译正则表达式
             Pattern pattern = Pattern.compile(regEx);
 
             Matcher matcher = pattern.matcher(pi.getPdfUrl());
             if (matcher.find()){
                 String temp = matcher.group(0);
-                pi.setPaperid(temp.substring(4, temp.length()-2));
+                pi.setPaperid(temp.substring(4, temp.length()-1));
             }
 
             ArrayList<String> citationsid = new ArrayList<String>();
             for(citation c : pi.getCitations()){
-                matcher = pattern.matcher(c.getName());
+                matcher = pattern.matcher(c.getUrl());
                 if(matcher.find()) {
                     String temp = matcher.group(0);
-                    citationsid.add(temp.substring(4, temp.length() - 2));
+                    citationsid.add(temp.substring(4, temp.length() - 1));
                 }
             }
             pi.setCitationsid(citationsid);
 
             ArrayList<String> referenceid = new ArrayList<String>();
             for(reference c : pi.getReferences()){
-                matcher = pattern.matcher(c.getName());
+                matcher = pattern.matcher(c.getUrl());
                 if(matcher.find()) {
                     String temp = matcher.group(0);
-                    referenceid.add(temp.substring(4, temp.length() - 2));
+                    referenceid.add(temp.substring(4, temp.length() - 1));
                 }
             }
             pi.setReferencesid(referenceid);
